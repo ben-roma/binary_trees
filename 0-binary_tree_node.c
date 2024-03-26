@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 /**
- * create_binary_tree_node - Allocates and initializes a new binary tree node
+ * create_binary_tree_node - Allocates and initializes a new node
  * @parent: A pointer to the parent node of the node being created
  * @value: The value to assign to the new node
  *
