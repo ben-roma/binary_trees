@@ -1,41 +1,55 @@
 #include "binary_trees.h"
 
 /**
- * binary_tree_depth - measures the depth of a node in a binary tree
- * @tree: pointer to the node to measure the depth
- * Return: depth of the node
+ * tree_max_height - returns the max height of a binary tree
+ * @tree: the pointer to the root node of the tree to check
+ * Return: the max height
  */
-size_t binary_tree_depth(const binary_tree_t *tree)
+static unsigned int tree_max_height(const binary_tree_t *tree)
 {
-	size_t depth = 0;
-
-	while (tree && tree->parent)
-	{
-		depth++;
-		tree = tree->parent;
-	}
-	return (depth);
-}
-
-/**
- * binary_tree_is_perfect - checks if a binary tree is perfect
- * @tree: pointer to the root node of the tree to check
- * Return: 1 if the tree is perfect, 0 otherwise or if tree is NULL
- */
-int binary_tree_is_perfect(const binary_tree_t *tree)
-{
-	size_t depth, left_depth, right_depth;
+	unsigned int left, right;
 
 	if (!tree)
 		return (0);
 
-	left_depth = tree->left ? binary_tree_depth(tree->left) : 0;
-	right_depth = tree->right ? binary_tree_depth(tree->right) : 0;
+	left = tree_max_height(tree->left);
+	right = tree_max_height(tree->right);
 
-	if (left_depth != right_depth)
+	return ((left > right ? left : right) + 1);
+}
+
+/**
+ * tree_min_height - returns the min height of a binary tree
+ * @tree: the pointer to the root node of the tree to check
+ * Return: the min height
+ */
+static unsigned int tree_min_height(const binary_tree_t *tree)
+{
+	unsigned int left, right;
+
+	if (!tree)
 		return (0);
 
-	depth = binary_tree_depth(tree);
+	left = tree_min_height(tree->left);
+	right = tree_min_height(tree->right);
 
-	return (binary_tree_is_perfect(tree->left) && binary_tree_is_perfect(tree->right) && left_depth == depth && right_depth == depth);
+	return ((left < right ? left : right) + 1);
+}
+
+/**
+ * binary_tree_is_perfect - checks if a binary tree is perfect
+ * @tree: the pointer of the tree to check
+ * Return: 1 if tree is perfect, 0 otherwise
+ */
+int binary_tree_is_perfect(const binary_tree_t *tree)
+{
+	unsigned int height, min_height;
+
+	if (!tree)
+		return (0);
+
+	height = tree_max_height(tree);
+	min_height = tree_min_height(tree);
+
+	return (height == min_height);
 }
